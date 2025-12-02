@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html lang="th">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Chemo Calc - โปรแกรมคำนวณยาเคมีบำบัด</title>
-
+    
     <!-- PWA Settings -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#4f46e5">
     <meta name="application-name" content="Chemo Calc">
-
+    
     <!-- Link to Manifest File -->
     <link rel="manifest" href="manifest.json">
-
+    
     <!-- Icons (Local Files) -->
     <link rel="apple-touch-icon" href="icons/icon-192.png">
     <link rel="icon" type="image/png" href="icons/icon-192.png">
@@ -92,7 +91,7 @@
             justify-content: center;
             gap: 10px;
         }
-
+        
         .subtitle {
             font-size: 0.95rem;
             color: #6b7280;
@@ -173,7 +172,7 @@
             align-items: center;
             justify-content: center;
         }
-
+        
         .clear-btn:hover {
             background-color: #f3f4f6;
             color: #ef4444;
@@ -197,15 +196,8 @@
         }
 
         @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .dropdown-item {
@@ -219,8 +211,7 @@
             border-bottom: none;
         }
 
-        .dropdown-item:hover,
-        .dropdown-item:active {
+        .dropdown-item:hover, .dropdown-item:active {
             background-color: #eff6ff;
             color: var(--primary-color);
         }
@@ -240,17 +231,10 @@
             display: none;
             animation: fadeIn 0.4s ease-out;
         }
-
+        
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .info-grid {
@@ -291,7 +275,7 @@
             background-color: var(--info-bg);
             border-color: #bae6fd;
         }
-
+        
         .info-tag.full-width span {
             color: var(--info-text);
         }
@@ -301,9 +285,9 @@
             color: var(--warning-text);
             border-color: var(--warning-border);
         }
-
+        
         .diluent-warning span {
-            color: var(--warning-text);
+             color: var(--warning-text);
         }
 
         .storage-section {
@@ -361,7 +345,7 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 70%);
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
             transform: rotate(30deg);
         }
 
@@ -387,7 +371,7 @@
             font-size: 2.2rem;
             font-weight: 700;
             line-height: 1;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
 
         .result-unit {
@@ -407,11 +391,11 @@
             border: 1px dashed #fecaca;
             line-height: 1.4;
         }
-
+        
         .dose-input-wrapper {
-            transition: all 0.3s;
+             transition: all 0.3s;
         }
-
+        
         .dose-input-wrapper.active {
             transform: scale(1.01);
         }
@@ -421,7 +405,7 @@
             padding-top: 20px;
             border-top: 2px dashed #e5e7eb;
         }
-
+        
         .section-title {
             font-size: 1rem;
             color: #374151;
@@ -447,7 +431,7 @@
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
-            -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
+            -webkit-tap-highlight-color: rgba(0,0,0,0.05);
         }
 
         .drug-card-item:hover {
@@ -456,7 +440,7 @@
             transform: translateY(-2px);
             background-color: #fcfdff;
         }
-
+        
         .drug-card-item strong {
             display: block;
             color: var(--primary-color);
@@ -470,7 +454,7 @@
             font-size: 0.75rem;
             display: block;
         }
-
+        
         .drug-card-item .badge {
             font-size: 0.65rem;
             background: #f3f4f6;
@@ -480,12 +464,12 @@
             margin-top: 4px;
             display: inline-block;
         }
-
+        
         .badge-recon {
             color: #0369a1;
             background: #e0f2fe;
         }
-
+        
         .badge-non-chemo {
             background-color: var(--non-chemo-bg);
             color: var(--non-chemo-text);
@@ -493,7 +477,6 @@
         }
     </style>
 </head>
-
 <body>
 
     <div class="container">
@@ -518,14 +501,13 @@
             <label id="doseLabel" for="doseInput">ขนาดยาที่ต้องการ (Dose)</label>
             <div class="input-wrapper">
                 <span class="input-icon">💉</span>
-                <input type="number" id="doseInput" placeholder="ระบุตัวเลข (mg/IU)" inputmode="decimal" step="0.01"
-                    disabled>
+                <input type="number" id="doseInput" placeholder="ระบุตัวเลข (mg/IU)" inputmode="decimal" step="0.01" disabled>
             </div>
         </div>
 
         <!-- Result Display -->
         <div id="resultArea" class="result-area">
-
+            
             <!-- 1. Result Card -->
             <div class="result-card">
                 <h3>ต้องดูดปริมาณยา<br><small style="font-weight: normal; opacity: 0.8;">Volume to draw</small></h3>
@@ -556,10 +538,9 @@
                 <!-- Badges will be injected here -->
             </div>
 
-            <p class="warning-text">⚠️ <strong>คำเตือน:</strong> ข้อมูลนี้เป็นเพียงเครื่องมือช่วยคำนวณ
-                โปรดตรวจสอบความถูกต้องกับฉลากยาจริงและคำนวณซ้ำอีกครั้ง</p>
+            <p class="warning-text">⚠️ <strong>คำเตือน:</strong> ข้อมูลนี้เป็นเพียงเครื่องมือช่วยคำนวณ โปรดตรวจสอบความถูกต้องกับฉลากยาจริงและคำนวณซ้ำอีกครั้ง</p>
         </div>
-
+        
         <!-- All Drugs List Section -->
         <div class="all-drugs-section">
             <div class="section-title">📋 รายการยาทั้งหมด (เลือกเพื่อคำนวณ)</div>
@@ -571,8 +552,12 @@
 
     <script>
         // --- ข้อมูลยา (Data) ---
+        // Storage Rules:
+        // - 'room': Shows "Forbidden to refrigerate" (Only Cisplatin)
+        // - 'fridge': Shows "Keep in fridge 2-8C"
+        // - light: true/false
         const drugsData = [
-            { name: "Actinomycin (Cosmegen®)", conc: 0.5, unit: "mg", diluent: "NSS, D5W", recon: "SWFI 1.1 ml", storage: 'room', light: true },
+            { name: "Actinomycin (Cosmegen®)", conc: 0.5, unit: "mg", diluent: "NSS, D5W", recon: "SWFI 1.1 ml", storage: 'fridge', light: true },
             { name: "Asparaginase (Leunase®)", conc: 10000, unit: "IU", diluent: "NSS", recon: "SWFI 1 ml", storage: 'fridge', light: true },
             { name: "Bevacizumab (Avastin®)", conc: 25, unit: "mg", diluent: "NSS เท่านั้น", recon: null, storage: 'fridge', light: true },
             { name: "Bleomycin (Bleolem®)", conc: 3, unit: "IU", diluent: "NSS, D5W", recon: "SWFI 5 ml", storage: 'fridge', light: true },
@@ -590,21 +575,21 @@
             { name: "Doxorubicin", conc: 2, unit: "mg", diluent: "NSS, D5W", recon: null, storage: 'fridge', light: true },
             { name: "Doxorubicin Liposomal (Lipodox®)", conc: 2, unit: "mg", diluent: "D5W เท่านั้น", recon: null, storage: 'fridge', light: true },
             { name: "Epirubicin", conc: 2, unit: "mg", diluent: "NSS, D5W", recon: "SWFI/NSS 25.5 ml", storage: 'fridge', light: true },
-            { name: "Etoposide", conc: 20, unit: "mg", diluent: "NSS, D5W", recon: null, storage: 'room', light: false },
-            { name: "Fluorouracil (5-FU)", conc: 50, unit: "mg", diluent: "NSS, D5W", recon: null, storage: 'room', light: true },
+            { name: "Etoposide", conc: 20, unit: "mg", diluent: "NSS, D5W", recon: null, storage: 'fridge', light: false },
+            { name: "Fluorouracil (5-FU)", conc: 50, unit: "mg", diluent: "NSS, D5W", recon: null, storage: 'fridge', light: true },
             { name: "Fludarabine (Fludara®)", conc: 25, unit: "mg", diluent: "NSS, D5W", recon: "SWFI 2 ml", storage: 'fridge', light: false },
-            { name: "Gemcitabine (Gemzar®)", conc: 40, unit: "mg", diluent: "NSS เท่านั้น", recon: "NSS 5 ml", storage: 'room', light: false },
+            { name: "Gemcitabine (Gemzar®)", conc: 40, unit: "mg", diluent: "NSS เท่านั้น", recon: "NSS 5 ml", storage: 'fridge', light: false },
             { name: "Idarubicin (Zovedox®)", conc: 1, unit: "mg", diluent: "NSS, D5W", recon: "SWFI 5 ml", storage: 'fridge', light: true },
             { name: "Ifosfamide (Ifolen®)", conc: 50, unit: "mg", diluent: "NSS, D5W", recon: "SWFI 19 ml", storage: 'fridge', light: false },
             { name: "Irinotecan (Campto®)", conc: 20, unit: "mg", diluent: "D5W เท่านั้น", recon: null, storage: 'fridge', light: true },
             { name: "Leucovorin", conc: 10, unit: "mg", diluent: "NSS, D5W", recon: null, storage: 'fridge', light: true, nonChemo: true },
             { name: "Mesna", conc: 100, unit: "mg", diluent: "NSS, D5W", recon: null, storage: 'fridge', light: true, nonChemo: true },
             { name: "Methotrexate", conc: 25, unit: "mg", diluent: "NSS, D5W", recon: null, storage: 'fridge', light: true },
-            { name: "Mitomycin-C", conc: 0.5, unit: "mg", diluent: "NSS", recon: "SWFI 10 ml", storage: 'room', light: true },
+            { name: "Mitomycin-C", conc: 0.5, unit: "mg", diluent: "NSS", recon: "SWFI 10 ml", storage: 'fridge', light: true },
             { name: "Mitoxantrone", conc: 2, unit: "mg", diluent: "NSS, D5W", recon: null, storage: 'fridge', light: false },
             { name: "Oxaliplatin (ผสมผง)", conc: 5, unit: "mg", diluent: "D5W เท่านั้น", recon: "SWFI 10ml (ต่อ 50mg)", storage: 'fridge', light: true },
             { name: "Oxaliplatin (Solution)", conc: 2, unit: "mg", diluent: "D5W เท่านั้น", recon: null, storage: 'fridge', light: true },
-            { name: "Paclitaxel (Taxol®)", conc: 6, unit: "mg", diluent: "NSS, D5W", recon: null, storage: 'room', light: true },
+            { name: "Paclitaxel (Taxol®)", conc: 6, unit: "mg", diluent: "NSS, D5W", recon: null, storage: 'fridge', light: true },
             { name: "Pemetrexed (Alimta®)", conc: 25, unit: "mg", diluent: "NSS เท่านั้น", recon: "NSS 4.2ml(100mg)/20ml(500mg)", storage: 'fridge', light: false },
             { name: "Rituximab (Mebthera®)", conc: 10, unit: "mg", diluent: "NSS, D5W", recon: null, storage: 'fridge', light: true },
             { name: "Topotecan (Hycamtin®)", conc: 1, unit: "mg", diluent: "NSS, D5W", recon: null, storage: 'fridge', light: true },
@@ -639,27 +624,27 @@
             drugsData.forEach(drug => {
                 const card = document.createElement('div');
                 card.className = 'drug-card-item';
-
+                
                 let badges = '';
-                if (drug.nonChemo) badges += `<span class="badge badge-non-chemo">ไม่ใช่ยาเคมีบำบัด</span> `;
-                if (drug.note) badges += `<span class="badge">${drug.note}</span> `;
-                if (drug.recon) badges += `<span class="badge badge-recon">ยาผง</span> `;
-
+                if(drug.nonChemo) badges += `<span class="badge badge-non-chemo">ไม่ใช่ยาเคมีบำบัด</span> `;
+                if(drug.note) badges += `<span class="badge">${drug.note}</span> `;
+                if(drug.recon) badges += `<span class="badge badge-recon">ยาผง</span> `;
+                
                 card.innerHTML = `
                     <strong>${drug.name}</strong>
                     <small>Conc: ${drug.conc} ${drug.unit}/ml</small>
                     <div style="margin-top:4px;">${badges}</div>
                 `;
-
+                
                 card.addEventListener('click', () => {
                     selectDrug(drug);
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 });
-
+                
                 allDrugsGrid.appendChild(card);
             });
         }
-
+        
         renderAllDrugs();
 
         function toggleClearButton() {
@@ -673,16 +658,16 @@
 
             if (val.length > 0) {
                 const filtered = drugsData.filter(d => d.name.toLowerCase().includes(val));
-
+                
                 if (filtered.length > 0) {
                     drugList.style.display = 'block';
                     filtered.forEach(drug => {
                         const div = document.createElement('div');
                         div.className = 'dropdown-item';
-
+                        
                         let extraTag = '';
-                        if (drug.nonChemo) extraTag = `<span class="badge badge-non-chemo" style="font-size:0.7em; margin-left:5px;">ไม่ใช่ยาเคมีบำบัด</span>`;
-
+                        if(drug.nonChemo) extraTag = `<span class="badge badge-non-chemo" style="font-size:0.7em; margin-left:5px;">ไม่ใช่ยาเคมีบำบัด</span>`;
+                        
                         div.innerHTML = `<strong>${drug.name} ${extraTag}</strong><span>Conc: ${drug.conc} ${drug.unit}/ml</span>`;
                         div.addEventListener('click', () => selectDrug(drug));
                         drugList.appendChild(div);
@@ -718,21 +703,21 @@
             searchInput.value = drug.name;
             drugList.style.display = 'none';
             toggleClearButton();
-
+            
             doseInput.disabled = false;
             doseInput.value = '';
             doseInput.focus();
-
+            
             doseWrapper.classList.add('active');
             setTimeout(() => doseWrapper.classList.remove('active'), 300);
 
             // Update Labels
             doseLabel.innerText = `ขนาดยาที่ต้องการ (${drug.unit})`;
             concDisplay.innerText = `${drug.conc} ${drug.unit}/ml`;
-
+            
             // Update Diluent Info
             diluentDisplay.innerText = drug.diluent;
-
+            
             if (drug.diluent.includes("เท่านั้น") || !drug.diluent.includes(",")) {
                 diluentTag.classList.add('diluent-warning');
             } else {
@@ -742,15 +727,15 @@
             // Update Reconstitution Info
             if (drug.recon) {
                 reconDisplay.innerText = drug.recon;
-                reconDisplay.style.color = "#0369a1";
+                reconDisplay.style.color = "#0369a1"; 
             } else {
                 reconDisplay.innerText = "ยาเป็นรูปแบบ solution";
-                reconDisplay.style.color = "#6b7280";
+                reconDisplay.style.color = "#6b7280"; 
             }
 
             // --- Update Storage Info ---
             storageArea.innerHTML = '';
-
+            
             if (drug.nonChemo) {
                 storageArea.innerHTML += `<div class="storage-badge" style="background-color: var(--non-chemo-bg); color: var(--non-chemo-text); border: 1px solid var(--non-chemo-border);">✅ ไม่ใช่ยาเคมีบำบัด</div>`;
             }
@@ -765,15 +750,15 @@
                 storageArea.innerHTML += `<div class="storage-badge storage-light">☀️ เก็บให้พ้นแสง</div>`;
             }
 
-            resultArea.style.display = 'block';
-            finalVolume.innerText = "0";
+            resultArea.style.display = 'block'; 
+            finalVolume.innerText = "0"; 
         }
 
         doseInput.addEventListener('input', calculateVolume);
 
         function calculateVolume() {
             if (!selectedDrug || !doseInput.value) {
-                if (selectedDrug) {
+                if(selectedDrug) {
                     finalVolume.innerText = "0";
                 } else {
                     resultArea.style.display = 'none';
@@ -785,14 +770,14 @@
             if (isNaN(dose) || dose < 0) return;
 
             const volume = dose / selectedDrug.conc;
-
+            
             let formattedVol;
             if (Number.isInteger(volume)) {
                 formattedVol = volume;
             } else {
-                formattedVol = parseFloat(volume.toFixed(2));
+                formattedVol = parseFloat(volume.toFixed(2)); 
             }
-
+            
             finalVolume.innerText = formattedVol;
         }
 
@@ -810,5 +795,4 @@
         }
     </script>
 </body>
-
 </html>
