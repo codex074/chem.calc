@@ -1,9 +1,12 @@
-const CACHE_NAME = 'chemo-calc-v2';
+const CACHE_NAME = 'chemo-calc-v3-local-icons';
 const urlsToCache = [
     './',
     './index.html',
     './manifest.json',
-    'https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;700&display=swap'
+    'https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;700&display=swap',
+    // Cache รูปไอคอนจากในเครื่อง
+    './icons/icon-192.png',
+    './icons/icon-512.png'
 ];
 
 // ติดตั้ง Service Worker และ Cache ไฟล์
