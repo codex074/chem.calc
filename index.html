@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Chemo Calc - โปรแกรมคำนวณยาเคมีบำบัด</title>
+
+    <!-- PWA Settings -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="application-name" content="Chemo Calc">
+
+    <!-- Link to Manifest File -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" href="https://img.icons8.com/fluency/192/test-tube.png">
+    <link rel="icon" type="image/png" href="https://img.icons8.com/fluency/192/test-tube.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%);
+            --bg-gradient: linear-gradient(135deg, #e0f2fe 0%, #f3e8ff 100%);
+            --primary-color: #4f46e5;
+            --text-color: #1f2937;
+            --card-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --border-radius: 16px;
+            --warning-bg: #fff7ed;
+            --warning-text: #9a3412;
+            --warning-border: #fdba74;
+            --alert-bg: #fef2f2;
+            --alert-text: #991b1b;
+            --info-bg: #f0f9ff;
+            --info-text: #0369a1;
+            --storage-fridge-bg: #dbeafe;
+            --storage-fridge-text: #1e40af;
+            --storage-room-bg: #ffedd5;
+            --storage-room-text: #9a3412;
+            --storage-light-bg: #f3e8ff;
+            --storage-light-text: #6b21a8;
+            --non-chemo-bg: #dcfce7;
+            --non-chemo-text: #166534;
+            --non-chemo-border: #86efac;
+        }
+
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            color: var(--text-color);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            max-width: 550px;
+            padding: 30px 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            border-top: 8px solid var(--primary-color);
+            position: relative;
+            margin-top: 20px;
+            margin-bottom: 80px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #6b7280;
+            margin-top: 5px;
+            font-weight: 500;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: #374151;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            color: #9ca3af;
+            pointer-events: none;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 40px 14px 45px;
+            font-size: 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+            font-family: 'Sarabun', sans-serif;
+            background-color: #f9fafb;
+            -webkit-appearance: none;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background-color: #fff;
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+
+        input:disabled {
+            background-color: #f3f4f6;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .clear-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 10px;
+            width: 40px;
+            height: 40px;
+            display: none;
+            border-radius: 50%;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .clear-btn:hover {
+            background-color: #f3f4f6;
+            color: #ef4444;
+        }
+
+        .dropdown-list {
+            position: absolute;
+            top: calc(100% + 5px);
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            max-height: 280px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            display: none;
+            animation: slideDown 0.2s ease-out;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dropdown-item {
+            padding: 14px 18px;
+            cursor: pointer;
+            border-bottom: 1px solid #f3f4f6;
+            transition: background 0.2s;
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-item:hover,
+        .dropdown-item:active {
+            background-color: #eff6ff;
+            color: var(--primary-color);
+        }
+
+        .dropdown-item strong {
+            display: block;
+            color: #111827;
+        }
+
+        .dropdown-item span {
+            font-size: 0.85em;
+            color: #6b7280;
+        }
+
+        .result-area {
+            margin-top: 25px;
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .info-tag {
+            background: #fff;
+            color: #374151;
+            padding: 8px 10px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            border: 1px solid #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .info-tag small {
+            color: #6b7280;
+            font-size: 0.75rem;
+            margin-bottom: 2px;
+        }
+
+        .info-tag span {
+            font-weight: 600;
+            color: var(--primary-color);
+            line-height: 1.2;
+        }
+
+        .info-tag.full-width {
+            grid-column: span 2;
+            background-color: var(--info-bg);
+            border-color: #bae6fd;
+        }
+
+        .info-tag.full-width span {
+            color: var(--info-text);
+        }
+
+        .diluent-warning {
+            background-color: var(--warning-bg);
+            color: var(--warning-text);
+            border-color: var(--warning-border);
+        }
+
+        .diluent-warning span {
+            color: var(--warning-text);
+        }
+
+        .storage-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .storage-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .storage-fridge {
+            background-color: var(--storage-fridge-bg);
+            color: var(--storage-fridge-text);
+        }
+
+        .storage-room {
+            background-color: var(--storage-room-bg);
+            color: var(--storage-room-text);
+        }
+
+        .storage-light {
+            background-color: var(--storage-light-bg);
+            color: var(--storage-light-text);
+        }
+
+        .result-card {
+            background: var(--primary-gradient);
+            border-radius: 14px;
+            padding: 15px 20px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 8px 15px rgba(79, 70, 229, 0.25);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .result-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 70%);
+            transform: rotate(30deg);
+        }
+
+        .result-card h3 {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 500;
+            opacity: 0.95;
+            text-align: left;
+        }
+
+        .result-value-container {
+            position: relative;
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 10px;
+            padding: 5px 15px;
+            backdrop-filter: blur(5px);
+            text-align: right;
+            min-width: 100px;
+        }
+
+        .result-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            line-height: 1;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-unit {
+            font-size: 0.9rem;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        .warning-text {
+            color: #b91c1c;
+            font-size: 0.8rem;
+            text-align: center;
+            margin-top: 15px;
+            background: var(--alert-bg);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px dashed #fecaca;
+            line-height: 1.4;
+        }
+
+        .dose-input-wrapper {
+            transition: all 0.3s;
+        }
+
+        .dose-input-wrapper.active {
+            transform: scale(1.01);
+        }
+
+        .all-drugs-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px dashed #e5e7eb;
+        }
+
+        .section-title {
+            font-size: 1rem;
+            color: #374151;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .drug-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 10px;
+        }
+
+        .drug-card-item {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .drug-card-item:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15);
+            transform: translateY(-2px);
+            background-color: #fcfdff;
+        }
+
+        .drug-card-item strong {
+            display: block;
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            margin-bottom: 3px;
+            line-height: 1.3;
+        }
+
+        .drug-card-item small {
+            color: #6b7280;
+            font-size: 0.75rem;
+            display: block;
+        }
+
+        .drug-card-item .badge {
+            font-size: 0.65rem;
+            background: #f3f4f6;
+            color: #4b5563;
+            padding: 2px 5px;
+            border-radius: 4px;
+            margin-top: 4px;
+            display: inline-block;
+        }
+
+        .badge-recon {
+            color: #0369a1;
+            background: #e0f2fe;
+        }
+
+        .badge-non-chemo {
+            background-color: var(--non-chemo-bg);
+            color: var(--non-chemo-text);
+            border: 1px solid var(--non-chemo-border);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <h1>🧪 Chemo Calc</h1>
+            <div class="subtitle">คำนวณปริมาณยาและตรวจสอบสารน้ำ</div>
+        </header>
+
+        <!-- Drug Selection -->
+        <div class="form-group">
+            <label for="drugSearch">ค้นหาชื่อยา</label>
+            <div class="input-wrapper">
+                <span class="input-icon">🔍</span>
+                <input type="text" id="drugSearch" placeholder="พิมพ์ชื่อยา เช่น Cisplatin..." autocomplete="off">
+                <button id="clearSearch" class="clear-btn" aria-label="ล้างค่า">✕</button>
+            </div>
+            <div id="drugList" class="dropdown-list"></div>
+        </div>
+
+        <!-- Dose Input -->
+        <div class="form-group dose-input-wrapper" id="doseWrapper">
+            <label id="doseLabel" for="doseInput">ขนาดยาที่ต้องการ (Dose)</label>
+            <div class="input-wrapper">
+                <span class="input-icon">💉</span>
+                <input type="number" id="doseInput" placeholder="ระบุตัวเลข (mg/IU)" inputmode="decimal" step="0.01"
+                    disabled>
+            </div>
+        </div>
+
+        <!-- Result Display -->
+        <div id="resultArea" class="result-area">
+
+            <!-- 1. Result Card -->
+            <div class="result-card">
+                <h3>ต้องดูดปริมาณยา<br><small style="font-weight: normal; opacity: 0.8;">Volume to draw</small></h3>
+                <div class="result-value-container">
+                    <div class="result-value" id="finalVolume">0</div>
+                    <div class="result-unit">CC (ml)</div>
+                </div>
+            </div>
+
+            <!-- 2. Info Grid -->
+            <div class="info-grid">
+                <div class="info-tag">
+                    <small>ความเข้มข้น (Conc)</small>
+                    <span id="concDisplay">...</span>
+                </div>
+                <div class="info-tag" id="diluentTag">
+                    <small>สารน้ำที่ใช้ผสม (Diluent)</small>
+                    <span id="diluentDisplay">...</span>
+                </div>
+                <div class="info-tag full-width" id="reconTag">
+                    <small>การละลายผงยา (Reconstitution)</small>
+                    <span id="reconDisplay">...</span>
+                </div>
+            </div>
+
+            <!-- 3. Storage Info Section -->
+            <div id="storageArea" class="storage-section">
+                <!-- Badges will be injected here -->
+            </div>
+
+            <p class="warning-text">⚠️ <strong>คำเตือน:</strong> ข้อมูลนี้เป็นเพียงเครื่องมือช่วยคำนวณ
+                โปรดตรวจสอบความถูกต้องกับฉลากยาจริงและคำนวณซ้ำอีกครั้ง</p>
+        </div>
+
+        <!-- All Drugs List Section -->
+        <div class="all-drugs-section">
+            <div class="section-title">📋 รายการยาทั้งหมด (เลือกเพื่อคำนวณ)</div>
+            <div id="allDrugsGrid" class="drug-grid">
+                <!-- Items will be injected here by JS -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- ข้อมูลยา (Data) ---
+        const drugsData = [
+            { name: "Actinomycin (Cosmegen®)", conc: 0.5, unit: "mg", diluent: "NSS, D5W", recon: "SWFI 1.1 ml", storage: 'room', light: true },
+            { name: "Asparaginase (Leunase®)", conc: 10000, unit: "IU", diluent: "NSS", recon: "SWFI 1 ml", storage: 'fridge', light: true },
+            { name: "Bevacizumab (Avastin®)", conc: 25, unit: "mg", diluent: "NSS เท่านั้น", recon: null, storage: 'fridge', light: true },
+            { name: "Bleomycin (Bleolem®)", conc: 3, unit: "IU", diluent: "NSS, D5W", recon: "SWFI 5 ml", storage: 'fridge', light: true },
+            { name: "Bortezomib (Velcade®) - IV", conc: 1, unit: "mg", note: "Standard IV", diluent: "NSS", recon: "NSS 3.6 ml", storage: 'fridge', light: false },
+            { name: "Bortezomib (Velcade®) - SC", conc: 2.5, unit: "mg", note: "For SC only", diluent: "NSS", recon: "NSS 0.8 ml", storage: 'fridge', light: false },
+            { name: "Carboplatin", conc: 10, unit: "mg", diluent: "NSS, D5W", recon: null, storage: 'fridge', light: true },
+            { name: "Cetuximab (Erbitux®)", conc: 5, unit: "mg", diluent: "NSS เท่านั้น", recon: null, storage: 'fridge', light: false },
+            { name: "Cisplatin", conc: 1, unit: "mg", diluent: "NSS เท่านั้น", recon: null, storage: 'room', light: true },
+            { name: "Cyclophosphamide (Endoxan®)", conc: 20, unit: "mg", diluent: "NSS, D5W", recon: "SWFI 49 ml", storage: 'fridge', light: true },
+            { name: "Cytarabine (100mg vial)", conc: 20, unit: "mg", diluent: "NSS, D5W", recon: "SWFI 5 ml", storage: 'room', light: true },
+            { name: "Cytarabine (500mg vial)", conc: 50, unit: "mg", diluent: "NSS, D5W", recon: "SWFI 10 ml", storage: 'room', light: true },
+            { name: "Dacarbazine medac", conc: 10, unit: "mg", note: "คํานวณจาก 500mg/50ml", diluent: "NSS, D5W", recon: "SWFI 49.25 ml", storage: 'fridge', light: true },
+            { name: "Docetaxel (General/UC)", conc: 10, unit: "mg", diluent: "NSS, D5W", recon: null, storage: 'fridge', light: true },
+            { name: "Docetaxel (Reimbursable)", conc: 20, unit: "mg", diluent: "NSS, D5W", recon: null, storage: 'fridge', light: true },
+            { name: "Doxorubicin", conc: 2, unit: "mg", diluent: "NSS, D5W", recon: null, storage: 'fridge', light: true },
+            { name: "Doxorubicin Liposomal (Lipodox®)", conc: 2, unit: "mg", diluent: "D5W เท่านั้น", recon: null, storage: 'fridge', light: true },
+            { name: "Epirubicin", conc: 2, unit: "mg", diluent: "NSS, D5W", recon: "SWFI/NSS 25.5 ml", storage: 'fridge', light: true },
+            { name: "Etoposide", conc: 20, unit: "mg", diluent: "NSS, D5W", recon: null, storage: 'room', light: false },
+            { name: "Fluorouracil (5-FU)", conc: 50, unit: "mg", diluent: "NSS, D5W", recon: null, storage: 'room', light: true },
+            { name: "Fludarabine (Fludara®)", conc: 25, unit: "mg", diluent: "NSS, D5W", recon: "SWFI 2 ml", storage: 'fridge', light: false },
+            { name: "Gemcitabine (Gemzar®)", conc: 40, unit: "mg", diluent: "NSS เท่านั้น", recon: "NSS 5 ml", storage: 'room', light: false },
+            { name: "Idarubicin (Zovedox®)", conc: 1, unit: "mg", diluent: "NSS, D5W", recon: "SWFI 5 ml", storage: 'fridge', light: true },
+            { name: "Ifosfamide (Ifolen®)", conc: 50, unit: "mg", diluent: "NSS, D5W", recon: "SWFI 19 ml", storage: 'fridge', light: false },
+            { name: "Irinotecan (Campto®)", conc: 20, unit: "mg", diluent: "D5W เท่านั้น", recon: null, storage: 'room', light: true },
+            { name: "Leucovorin", conc: 10, unit: "mg", diluent: "NSS, D5W", recon: null, storage: 'fridge', light: true, nonChemo: true },
+            { name: "Mesna", conc: 100, unit: "mg", diluent: "NSS, D5W", recon: null, storage: 'fridge', light: true, nonChemo: true },
+            { name: "Methotrexate", conc: 25, unit: "mg", diluent: "NSS, D5W", recon: null, storage: 'fridge', light: true },
+            { name: "Mitomycin-C", conc: 0.5, unit: "mg", diluent: "NSS", recon: "SWFI 10 ml", storage: 'room', light: true },
+            { name: "Mitoxantrone", conc: 2, unit: "mg", diluent: "NSS, D5W", recon: null, storage: 'fridge', light: false },
+            { name: "Oxaliplatin (ผสมผง)", conc: 5, unit: "mg", diluent: "D5W เท่านั้น", recon: "SWFI 10ml (ต่อ 50mg)", storage: 'room', light: true },
+            { name: "Oxaliplatin (Solution)", conc: 2, unit: "mg", diluent: "D5W เท่านั้น", recon: null, storage: 'room', light: true },
+            { name: "Paclitaxel (Taxol®)", conc: 6, unit: "mg", diluent: "NSS, D5W", recon: null, storage: 'room', light: true },
+            { name: "Pemetrexed (Alimta®)", conc: 25, unit: "mg", diluent: "NSS เท่านั้น", recon: "NSS 4.2ml(100mg)/20ml(500mg)", storage: 'fridge', light: false },
+            { name: "Rituximab (Mebthera®)", conc: 10, unit: "mg", diluent: "NSS, D5W", recon: null, storage: 'fridge', light: true },
+            { name: "Topotecan (Hycamtin®)", conc: 1, unit: "mg", diluent: "NSS, D5W", recon: null, storage: 'fridge', light: true },
+            { name: "Trastuzumab (Herceptin®)", conc: 21, unit: "mg", diluent: "NSS เท่านั้น", recon: "SWFI 7.2 ml (for 150mg)", storage: 'fridge', light: true },
+            { name: "Vinblastine", conc: 2, unit: "mg", note: "Reconstitute 5ml", diluent: "NSS, D5W", recon: "NSS 5 ml", storage: 'fridge', light: false },
+            { name: "Vincristine", conc: 1, unit: "mg", diluent: "NSS, D5W", recon: null, storage: 'fridge', light: false },
+            { name: "Vinorelbine (Navelbine®)", conc: 10, unit: "mg", diluent: "NSS, D5W", recon: null, storage: 'fridge', light: true },
+            { name: "Zoledronic acid (Zometa®)", conc: 0.8, unit: "mg", diluent: "NSS, D5W", recon: "SWFI 5 ml", storage: 'fridge', light: false }
+        ];
+
+        // --- Variables ---
+        const searchInput = document.getElementById('drugSearch');
+        const clearBtn = document.getElementById('clearSearch');
+        const drugList = document.getElementById('drugList');
+        const doseInput = document.getElementById('doseInput');
+        const doseLabel = document.getElementById('doseLabel');
+        const doseWrapper = document.getElementById('doseWrapper');
+        const resultArea = document.getElementById('resultArea');
+        const concDisplay = document.getElementById('concDisplay');
+        const diluentDisplay = document.getElementById('diluentDisplay');
+        const diluentTag = document.getElementById('diluentTag');
+        const reconDisplay = document.getElementById('reconDisplay');
+        const storageArea = document.getElementById('storageArea');
+        const finalVolume = document.getElementById('finalVolume');
+        const allDrugsGrid = document.getElementById('allDrugsGrid');
+
+        let selectedDrug = null;
+
+        // --- Functions ---
+        function renderAllDrugs() {
+            allDrugsGrid.innerHTML = '';
+            drugsData.forEach(drug => {
+                const card = document.createElement('div');
+                card.className = 'drug-card-item';
+
+                let badges = '';
+                if (drug.nonChemo) badges += `<span class="badge badge-non-chemo">ไม่ใช่ยาเคมีบำบัด</span> `;
+                if (drug.note) badges += `<span class="badge">${drug.note}</span> `;
+                if (drug.recon) badges += `<span class="badge badge-recon">ยาผง</span> `;
+
+                card.innerHTML = `
+                    <strong>${drug.name}</strong>
+                    <small>Conc: ${drug.conc} ${drug.unit}/ml</small>
+                    <div style="margin-top:4px;">${badges}</div>
+                `;
+
+                card.addEventListener('click', () => {
+                    selectDrug(drug);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+
+                allDrugsGrid.appendChild(card);
+            });
+        }
+
+        renderAllDrugs();
+
+        function toggleClearButton() {
+            clearBtn.style.display = searchInput.value.length > 0 ? 'flex' : 'none';
+        }
+
+        searchInput.addEventListener('input', (e) => {
+            const val = e.target.value.toLowerCase();
+            drugList.innerHTML = '';
+            toggleClearButton();
+
+            if (val.length > 0) {
+                const filtered = drugsData.filter(d => d.name.toLowerCase().includes(val));
+
+                if (filtered.length > 0) {
+                    drugList.style.display = 'block';
+                    filtered.forEach(drug => {
+                        const div = document.createElement('div');
+                        div.className = 'dropdown-item';
+
+                        let extraTag = '';
+                        if (drug.nonChemo) extraTag = `<span class="badge badge-non-chemo" style="font-size:0.7em; margin-left:5px;">ไม่ใช่ยาเคมีบำบัด</span>`;
+
+                        div.innerHTML = `<strong>${drug.name} ${extraTag}</strong><span>Conc: ${drug.conc} ${drug.unit}/ml</span>`;
+                        div.addEventListener('click', () => selectDrug(drug));
+                        drugList.appendChild(div);
+                    });
+                } else {
+                    drugList.style.display = 'none';
+                }
+            } else {
+                drugList.style.display = 'none';
+            }
+        });
+
+        clearBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            toggleClearButton();
+            selectedDrug = null;
+            doseInput.value = '';
+            doseInput.disabled = true;
+            resultArea.style.display = 'none';
+            drugList.style.display = 'none';
+            doseLabel.innerText = 'ขนาดยาที่ต้องการ (Dose)';
+            searchInput.focus();
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!searchInput.contains(e.target) && !drugList.contains(e.target) && !clearBtn.contains(e.target)) {
+                drugList.style.display = 'none';
+            }
+        });
+
+        function selectDrug(drug) {
+            selectedDrug = drug;
+            searchInput.value = drug.name;
+            drugList.style.display = 'none';
+            toggleClearButton();
+
+            doseInput.disabled = false;
+            doseInput.value = '';
+            doseInput.focus();
+
+            doseWrapper.classList.add('active');
+            setTimeout(() => doseWrapper.classList.remove('active'), 300);
+
+            // Update Labels
+            doseLabel.innerText = `ขนาดยาที่ต้องการ (${drug.unit})`;
+            concDisplay.innerText = `${drug.conc} ${drug.unit}/ml`;
+
+            // Update Diluent Info
+            diluentDisplay.innerText = drug.diluent;
+
+            if (drug.diluent.includes("เท่านั้น") || !drug.diluent.includes(",")) {
+                diluentTag.classList.add('diluent-warning');
+            } else {
+                diluentTag.classList.remove('diluent-warning');
+            }
+
+            // Update Reconstitution Info
+            if (drug.recon) {
+                reconDisplay.innerText = drug.recon;
+                reconDisplay.style.color = "#0369a1";
+            } else {
+                reconDisplay.innerText = "ยาเป็นรูปแบบ solution";
+                reconDisplay.style.color = "#6b7280";
+            }
+
+            // --- Update Storage Info ---
+            storageArea.innerHTML = '';
+
+            if (drug.nonChemo) {
+                storageArea.innerHTML += `<div class="storage-badge" style="background-color: var(--non-chemo-bg); color: var(--non-chemo-text); border: 1px solid var(--non-chemo-border);">✅ ไม่ใช่ยาเคมีบำบัด</div>`;
+            }
+
+            if (drug.storage === 'fridge') {
+                storageArea.innerHTML += `<div class="storage-badge storage-fridge">❄️ เก็บในตู้เย็น (2-8°C)</div>`;
+            } else if (drug.storage === 'room') {
+                storageArea.innerHTML += `<div class="storage-badge storage-room">🌡️ ห้ามเก็บในตู้เย็น (เก็บอุณหภูมิห้อง)</div>`;
+            }
+
+            if (drug.light) {
+                storageArea.innerHTML += `<div class="storage-badge storage-light">☀️ เก็บให้พ้นแสง</div>`;
+            }
+
+            resultArea.style.display = 'block';
+            finalVolume.innerText = "0";
+        }
+
+        doseInput.addEventListener('input', calculateVolume);
+
+        function calculateVolume() {
+            if (!selectedDrug || !doseInput.value) {
+                if (selectedDrug) {
+                    finalVolume.innerText = "0";
+                } else {
+                    resultArea.style.display = 'none';
+                }
+                return;
+            }
+
+            const dose = parseFloat(doseInput.value);
+            if (isNaN(dose) || dose < 0) return;
+
+            const volume = dose / selectedDrug.conc;
+
+            let formattedVol;
+            if (Number.isInteger(volume)) {
+                formattedVol = volume;
+            } else {
+                formattedVol = parseFloat(volume.toFixed(2));
+            }
+
+            finalVolume.innerText = formattedVol;
+        }
+
+        // --- PWA Service Worker Registration ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful');
+                    })
+                    .catch(err => {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+    </script>
+</body>
+
+</html>
